@@ -1,0 +1,99 @@
+/* Front styles for Swiper */
+.wp-block-up-bk-swiper-slider {
+  position: relative;
+
+  .swiper {
+    width: 100%;
+  }
+
+  .swiper img {
+    width: 100%;
+    height: var(--slide-height, auto);
+    object-fit: var(--desktop-object-fit, cover);
+    display: block;
+  }
+
+  .swiper-pagination {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 10px;
+  }
+
+  /* Default Swiper arrows */
+  .swiper-button-prev,
+  .swiper-button-next,
+  .swiper-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+    width: var(--nav-icon-size, 24px);
+    height: var(--nav-icon-size, 24px);
+    padding: var(--nav-padding, 0.5em);
+    border-radius: var(--nav-radius, 50%);
+    background: var(--nav-bg, rgba(255,255,255,0.9));
+    color: var(--nav-color, currentColor);
+    z-index: 5;
+  }
+
+  .swiper-button-prev,
+  .swiper-arrow.is-prev { left: var(--nav-gap, 1em); }
+  .swiper-button-next,
+  .swiper-arrow.is-next { right: var(--nav-gap, 1em); }
+
+  /* Arrow position variants */
+  &[data-arrow-position="center"] {
+    .swiper-button-prev,
+    .swiper-button-next,
+    .swiper-arrow { top: 50%; transform: translateY(-50%); }
+  }
+
+  &[data-arrow-position="top-left"],
+  &[data-arrow-position="top-right"] {
+    .swiper-button-prev,
+    .swiper-button-next,
+    .swiper-arrow { top: var(--nav-gap, 1em); transform: none; }
+  }
+  &[data-arrow-position="top-left"] {
+    .swiper-button-prev,
+    .swiper-arrow.is-prev { left: var(--nav-gap, 1em); }
+    .swiper-button-next,
+    .swiper-arrow.is-next { right: auto; left: calc(var(--nav-gap, 1em) + 3rem); }
+  }
+  &[data-arrow-position="top-right"] {
+    .swiper-button-next,
+    .swiper-arrow.is-next { right: var(--nav-gap, 1em); }
+    .swiper-button-prev,
+    .swiper-arrow.is-prev { left: auto; right: calc(var(--nav-gap, 1em) + 3rem); }
+  }
+
+  &[data-arrow-position="bottom-left"],
+  &[data-arrow-position="bottom-right"],
+  &[data-arrow-position="bottom-center"] {
+    .swiper-button-prev,
+    .swiper-button-next,
+    .swiper-arrow { top: auto; bottom: var(--nav-gap, 1em); transform: none; }
+  }
+  &[data-arrow-position="bottom-left"] {
+    .swiper-button-prev,
+    .swiper-arrow.is-prev { left: var(--nav-gap, 1em); }
+    .swiper-button-next,
+    .swiper-arrow.is-next { right: auto; left: calc(var(--nav-gap, 1em) + 3rem); }
+  }
+  &[data-arrow-position="bottom-right"] {
+    .swiper-button-next,
+    .swiper-arrow.is-next { right: var(--nav-gap, 1em); }
+    .swiper-button-prev,
+    .swiper-arrow.is-prev { left: auto; right: calc(var(--nav-gap, 1em) + 3rem); }
+  }
+  &[data-arrow-position="bottom-center"] {
+    .swiper-button-prev,
+    .swiper-arrow.is-prev { left: 50%; transform: translateX(calc(-100% - var(--nav-gap, 1em))); }
+    .swiper-button-next,
+    .swiper-arrow.is-next { right: 50%; transform: translateX(calc(100% + var(--nav-gap, 1em))); }
+  }
+}
