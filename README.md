@@ -1,5 +1,7 @@
 # UP BK Swiper Slider (drop-in)
 
+Version: 0.2.2
+
 Drop-in replacement for UP BK Slick Slider using Swiper v11. Keeps the same block name `up-bk/slick-slider` for compatibility.
 
 ## Installation
@@ -62,7 +64,31 @@ Example theme CSS:
 
 ## Build
 - `npm run build` builds assets and copies `src/render.php` to `build/`
+  - Editor styles: `build/index.css`
+  - Front styles: `build/style-index.css`
 
 ## Notes
 - Do not activate the original `up-bk-slick-slider` at the same time (same block name).
 - Swiper modules: Navigation, Pagination, EffectFade, Autoplay imported from `swiper/modules`.
+
+## Changelog
+
+### 0.2.2
+- Fix build errors by switching SCSS imports to Swiper exported entrypoints (`swiper/css`, `swiper/css/*`).
+- Ensure front layout by bundling Swiper CSS in front stylesheet and confirming style asset mapping.
+- Minor JS init fixes: use `.wp-block-up-bk-swiper-slider .swiper` and scope navigation selectors to the current slider instance.
+
+### 0.2.1
+- Add navigation color controls: `navBg`, `navColor`, `navBgHover`, `navColorHover` (editor + front).
+- Ensure navigation sizing variables apply (icon size, gap, radius, padding) in editor and front.
+- Map `--nav-icon-size` to Swiper variable `--swiper-navigation-size`.
+- Align navigation behavior in editor/front: same classes and `data-arrow-position` support.
+- Add hover styles for default and custom arrows.
+- Fix asset mapping: `style` → `build/style-index.css`, `editorStyle` → `build/index.css`.
+- Import Swiper CSS in front bundle via `@import "swiper/css"` and related module CSS.
+- Scope navigation selectors to the current slider instance in JS to avoid cross-binding.
+
+### 0.2.0
+- Introduce `insertArrows` option to auto-render arrows or let the theme render them.
+- Add `custom` arrow type with `customPrevClass` and `customNextClass` selectors.
+- Simplify render and styles to Swiper-only classes; remove Slick references.

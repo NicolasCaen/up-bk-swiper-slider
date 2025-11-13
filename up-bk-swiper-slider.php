@@ -3,7 +3,7 @@
  * Plugin Name: UP BK Swiper Slider
  * Description: Drop-in replacement for UP BK Slick Slider, using Swiper under the hood with compatible block attributes.
  * Author: UP
- * Version: 0.2.0
+ * Version: 0.2.2
  * License: GPL-2.0-or-later
  * Text Domain: up-bk-swiper-slider
  */

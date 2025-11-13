@@ -13,6 +13,20 @@ function initSwiper(el){
   // Ensure modules
   Swiper.use([Navigation, Pagination, EffectFade, Autoplay]);
 
+  // Scope navigation selectors to this slider when possible to avoid cross-binding
+  if (opts && opts.navigation) {
+    const nav = opts.navigation === true ? {} : { ...opts.navigation };
+    if (nav.prevEl && typeof nav.prevEl === 'string') {
+      const localPrev = el.querySelector(nav.prevEl);
+      nav.prevEl = localPrev || document.querySelector(nav.prevEl);
+    }
+    if (nav.nextEl && typeof nav.nextEl === 'string') {
+      const localNext = el.querySelector(nav.nextEl);
+      nav.nextEl = localNext || document.querySelector(nav.nextEl);
+    }
+    opts.navigation = nav;
+  }
+
   // Pause on hover support
   if (opts.autoplay && el.dataset.pauseOnHover === 'true') {
     opts.on = opts.on || {};
@@ -28,5 +42,5 @@ function initSwiper(el){
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.wp-block-up-bk-slick-slider .swiper').forEach(initSwiper);
+  document.querySelectorAll('.wp-block-up-bk-swiper-slider .swiper').forEach(initSwiper);
 });

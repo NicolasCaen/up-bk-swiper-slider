@@ -15,7 +15,8 @@ import {
     SelectControl,
     TextControl,
     TabPanel,
-    Notice
+    Notice,
+    ColorPicker
 } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 import { useEffect, useState, useRef } from '@wordpress/element';
@@ -58,10 +59,32 @@ export default function Edit({ attributes, setAttributes }) {
         navIconSize,
         navGap,
         navRadius,
-        navPadding
+        navPadding,
+        insertArrows,
+        customPrevClass,
+        customNextClass,
+        navBg,
+        navColor,
+        navBgHover,
+        navColorHover
     } = attributes;
 
-    const blockProps = useBlockProps();
+    const blockProps = useBlockProps({
+        className: 'wp-block-up-bk-slick-slider-editor wp-block-up-bk-swiper-slider',
+        'data-arrow-position': arrowPosition,
+        style: {
+            '--nav-icon-size': navIconSize || '24px',
+            '--nav-gap': (typeof navGap === 'number' ? `${navGap}em` : (navGap || '1em')),
+            '--nav-radius': navRadius || '50%',
+            '--nav-padding': (typeof navPadding === 'number' ? `${navPadding}em` : (navPadding || '0.5em')),
+            ...(navBg ? { '--nav-bg': navBg } : {}),
+            ...(navColor ? { '--nav-color': navColor } : {}),
+            ...(navBgHover ? { '--nav-bg-hover': navBgHover } : {}),
+            ...(navColorHover ? { '--nav-color-hover': navColorHover } : {}),
+            '--slide-height': slideHeight || 'auto',
+            '--desktop-object-fit': objectFit || 'cover',
+        }
+    });
     const [attachments, setAttachments] = useState([]);
     const [tabletPanelOpen, setTabletPanelOpen] = useState(false);
     const [mobilePanelOpen, setMobilePanelOpen] = useState(false);
@@ -738,6 +761,12 @@ export default function Edit({ attributes, setAttributes }) {
                     />
                     {arrows && (
                         <>
+                            <ToggleControl
+                                label={__('Insert arrows (render elements)', 'up-bk-slick-slider')}
+                                checked={!!insertArrows}
+                                onChange={(value) => setAttributes({ insertArrows: value })}
+                                help={__('If disabled, add your own DOM elements and set selectors in custom mode.', 'up-bk-slick-slider')}
+                            />
                             <SelectControl
                                 label={__('Arrow Type', 'up-bk-slick-slider')}
                                 value={arrowType}
@@ -800,6 +829,43 @@ export default function Edit({ attributes, setAttributes }) {
                                 max={3}
                                 step={0.1}
                             />
+
+                            <PanelBody title={__('Colors', 'up-bk-slick-slider')} initialOpen={false}>
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                                    <div>
+                                        <label style={{ display: 'block', marginBottom: 6 }}>{__('Arrow BG', 'up-bk-slick-slider')}</label>
+                                        <ColorPicker
+                                            color={navBg || ''}
+                                            onChangeComplete={(c) => setAttributes({ navBg: c.hex })}
+                                            disableAlpha
+                                        />
+                                    </div>
+                                    <div>
+                                        <label style={{ display: 'block', marginBottom: 6 }}>{__('Arrow Color', 'up-bk-slick-slider')}</label>
+                                        <ColorPicker
+                                            color={navColor || ''}
+                                            onChangeComplete={(c) => setAttributes({ navColor: c.hex })}
+                                            disableAlpha
+                                        />
+                                    </div>
+                                    <div>
+                                        <label style={{ display: 'block', marginBottom: 6 }}>{__('Arrow BG (hover)', 'up-bk-slick-slider')}</label>
+                                        <ColorPicker
+                                            color={navBgHover || ''}
+                                            onChangeComplete={(c) => setAttributes({ navBgHover: c.hex })}
+                                            disableAlpha
+                                        />
+                                    </div>
+                                    <div>
+                                        <label style={{ display: 'block', marginBottom: 6 }}>{__('Arrow Color (hover)', 'up-bk-slick-slider')}</label>
+                                        <ColorPicker
+                                            color={navColorHover || ''}
+                                            onChangeComplete={(c) => setAttributes({ navColorHover: c.hex })}
+                                            disableAlpha
+                                        />
+                                    </div>
+                                </div>
+                            </PanelBody>
                         </>
                     )}
                     <ToggleControl
@@ -960,23 +1026,26 @@ export default function Edit({ attributes, setAttributes }) {
                     )}
 
                     {arrows && (
-                        <div className="wp-block-up-bk-slick-slider__nav">
-                            <div 
-                                className="wp-block-up-bk-slick-slider__nav__arrow wp-block-up-bk-slick-slider__nav__arrow--prev"
-                                onClick={handlePrevClick}
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                                    <path d="M14.6 7.4L10 12l4.6 4.6L13.2 18l-6-6 6-6z"/>
-                                </svg>
-                            </div>
-                            <div 
-                                className="wp-block-up-bk-slick-slider__nav__arrow wp-block-up-bk-slick-slider__nav__arrow--next"
-                                onClick={handleNextClick}
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                                    <path d="M9.4 18L8 16.6l4.6-4.6L8 7.4 9.4 6l6 6z"/>
-                                </svg>
-                            </div>
+                        <div>
+                            {insertArrows && (
+                                arrowType === 'custom' && customPrevClass && customNextClass ? (
+                                    <>
+                                        <div
+                                            className={`swiper-arrow is-prev ${customPrevClass.startsWith('.') ? customPrevClass.slice(1) : customPrevClass}`}
+                                            onClick={handlePrevClick}
+                                        />
+                                        <div
+                                            className={`swiper-arrow is-next ${customNextClass.startsWith('.') ? customNextClass.slice(1) : customNextClass}`}
+                                            onClick={handleNextClick}
+                                        />
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="swiper-button-prev" onClick={handlePrevClick} />
+                                        <div className="swiper-button-next" onClick={handleNextClick} />
+                                    </>
+                                )
+                            )}
                         </div>
                     )}
                 </div>

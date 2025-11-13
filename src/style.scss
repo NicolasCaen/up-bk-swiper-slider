@@ -1,9 +1,25 @@
 /* Front styles for Swiper */
+@import "swiper/css";
+@import "swiper/css/navigation";
+@import "swiper/css/pagination";
+@import "swiper/css/effect-fade";
 .wp-block-up-bk-swiper-slider {
   position: relative;
+  /* Map plugin vars to Swiper's native vars so default arrows reflect size/color */
+  --swiper-navigation-size: var(--nav-icon-size, 24px);
+  --swiper-theme-color: currentColor;
 
   .swiper {
     width: 100%;
+  }
+
+  /* Fixed height mode propagated via --slide-height */
+  .swiper.is-fixed-height {
+    height: var(--slide-height, auto);
+  }
+  .swiper.is-fixed-height .swiper-wrapper,
+  .swiper.is-fixed-height .swiper-slide {
+    height: 100%;
   }
 
   .swiper img {
@@ -37,6 +53,7 @@
     border-radius: var(--nav-radius, 50%);
     background: var(--nav-bg, rgba(255,255,255,0.9));
     color: var(--nav-color, currentColor);
+    transition: background-color .2s ease, color .2s ease, box-shadow .2s ease, transform .2s ease;
     z-index: 5;
   }
 
@@ -44,6 +61,15 @@
   .swiper-arrow.is-prev { left: var(--nav-gap, 1em); }
   .swiper-button-next,
   .swiper-arrow.is-next { right: var(--nav-gap, 1em); }
+
+  /* Hover state (both default and custom arrows) */
+  .swiper-button-prev:hover,
+  .swiper-button-next:hover,
+  .swiper-arrow:hover {
+    background: var(--nav-bg-hover, var(--nav-bg, rgba(0,0,0,0.85)));
+    color: var(--nav-color-hover, #fff);
+    box-shadow: 0 4px 10px rgba(0,0,0,.15);
+  }
 
   /* Arrow position variants */
   &[data-arrow-position="center"] {

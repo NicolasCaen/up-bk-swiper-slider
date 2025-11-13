@@ -80,13 +80,17 @@ $style_string = implode('; ', $initial_styles);
 
 // Arrows assets (reuse existing arrow types if provided in this plugin later)
 // Basic styles as CSS variables if needed
-$nav_styles = sprintf(
-    'style="--nav-icon-size: %s; --nav-gap: %sem; --nav-radius: %s; --nav-padding: %sem;"',
-    esc_attr($attributes['navIconSize'] ?? '24px'),
-    esc_attr($attributes['navGap'] ?? 1),
-    esc_attr($attributes['navRadius'] ?? '50%'),
-    esc_attr($attributes['navPadding'] ?? 0.5)
-);
+$nav_style_pairs = [
+    sprintf('--nav-icon-size: %s', esc_attr($attributes['navIconSize'] ?? '24px')),
+    sprintf('--nav-gap: %sem', esc_attr($attributes['navGap'] ?? 1)),
+    sprintf('--nav-radius: %s', esc_attr($attributes['navRadius'] ?? '50%')),
+    sprintf('--nav-padding: %sem', esc_attr($attributes['navPadding'] ?? 0.5)),
+];
+if (!empty($attributes['navBg'])) { $nav_style_pairs[] = sprintf('--nav-bg: %s', esc_attr($attributes['navBg'])); }
+if (!empty($attributes['navColor'])) { $nav_style_pairs[] = sprintf('--nav-color: %s', esc_attr($attributes['navColor'])); }
+if (!empty($attributes['navBgHover'])) { $nav_style_pairs[] = sprintf('--nav-bg-hover: %s', esc_attr($attributes['navBgHover'])); }
+if (!empty($attributes['navColorHover'])) { $nav_style_pairs[] = sprintf('--nav-color-hover: %s', esc_attr($attributes['navColorHover'])); }
+$nav_styles = 'style="' . implode('; ', $nav_style_pairs) . '"';
 
 // Wrapper attributes
 $arrow_position = $attributes['arrowPosition'] ?? 'center';
